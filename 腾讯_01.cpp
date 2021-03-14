@@ -56,35 +56,32 @@ int main() {
 }
 
 
-//  大佬的解法
+// 大佬的答案   ： 单调栈 
 #include <iostream>
-#include <string>
+#include <vector>
+#include <stack>
+#include <algorithm>
 using namespace std;
-
+vector<int> a, b;
+stack<int> st1, st2;
+  
 int main() {
-      string s;
-      cin >> s;
-      int i = 0;
-      while (i < s.length()) {
-            if (s[i] == ']') {
-                  int j = i;//j用来向前寻找与]相匹配的[
-                  int k = 0;//k用来记录'|'所在位置
-                  while (s[j] != '[') {
-                        if (s[j] == '|')
-                              k = j;
-                        j--;
-                  }
-                  int len = stoi(s.substr(j + 1, k - j));
-                  string s1 = s.substr(k + 1, i - k - 1);
-                  string s2;
-                  for (int si = 0; si < len; si++) {//将识别到的括号内容进行解码
-                        s2 += s1;
-                  }
-                  s = s.replace(j, i - j + 1, s2);
-                  i = j;//替换后i所指向的内容变化，从替换部分的头开始再寻找
-            }
-            i++;
-      }
-      cout << s << endl;
+    int n, x[100001];
+    cin >> n;
+    int ans = 0;
+    for (int i = 0; i < n; i++) cin >> x[i];
+      
+    for (int i = 0, j = n - 1; i < n, j >= 0; i++, j--) {
+        a.push_back(st1.size());
+        b.push_back(st2.size());
+          
+        while (!st1.empty() && st1.top() <= x[i]) st1.pop();
+        while (!st2.empty() && st2.top() <= x[j]) st2.pop();
+        st1.push(x[i]);
+        st2.push(x[j]);
+    }
+    reverse(b.begin(), b.end());
+    for (int i = 0; i < n; i++) cout << b[i] + a[i] + 1<< " ";
+    return 0;
 }
- 
+
